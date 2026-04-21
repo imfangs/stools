@@ -99,6 +99,7 @@ export default function ImageCard({ page, config }: ImageCardProps) {
             position: 'absolute',
             top: 0,
             left: 0,
+            boxSizing: 'border-box',
             width: config.imageWidth,
             height: config.imageHeight,
             backgroundColor: config.backgroundColor,
@@ -130,7 +131,7 @@ export default function ImageCard({ page, config }: ImageCardProps) {
         </div>
       </div>
       <div className="text-center text-[10px] text-gray-400 font-mono tracking-wide">
-        {page.index + 1} / {config.imageWidth}×{config.imageHeight}
+        {page.index + 1}
       </div>
     </div>
   );

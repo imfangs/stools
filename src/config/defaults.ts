@@ -4,8 +4,8 @@ export const defaultConfig: LayoutConfig = {
   imageWidth: 1170,
   imageHeight: 1560,
 
-  paddingTop: 120,
-  paddingBottom: 120,
+  paddingTop: 200,
+  paddingBottom: 200,
   paddingLeft: 80,
   paddingRight: 80,
 

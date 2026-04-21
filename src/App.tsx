@@ -84,7 +84,7 @@ export default function App() {
         <header className="flex items-center justify-between px-8 py-4 bg-white/80 backdrop-blur border-b border-gray-200/60 shrink-0">
           <div className="flex items-center gap-2">
             <h1 className="text-lg font-semibold tracking-tight text-gray-900">STools</h1>
-            <span className="text-xs text-gray-300 font-light">*</span>
+            <span className="w-1.5 h-1.5 rounded-full bg-black"></span>
             <span className="text-lg font-semibold tracking-tight text-gray-900">Pub</span>
           </div>
           <button
