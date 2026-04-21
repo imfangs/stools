@@ -41,6 +41,7 @@ export default function App() {
   const [config, setConfig] = useState<LayoutConfig>(loadConfig);
   const [showConfig, setShowConfig] = useState(false);
   const [isExporting, setIsExporting] = useState(false);
+
   const generate = useCallback((t: string, c: LayoutConfig) => {
     const elements = parseText(t);
     const result = paginate(elements, c);
@@ -77,47 +78,49 @@ export default function App() {
   }, []);
 
   return (
-    <div className="h-full flex flex-col bg-gray-50">
-      {/* Header */}
-      <header className="flex items-center justify-between px-8 py-4 bg-white border-b border-gray-200/80 shrink-0">
-        <div className="flex items-center gap-2">
-          <h1 className="text-lg font-semibold tracking-tight text-gray-900">STools</h1>
-          <span className="text-xs text-gray-400 font-light">*</span>
-          <span className="text-lg font-semibold tracking-tight text-gray-900">Pub</span>
-        </div>
-        <button
-          onClick={() => setShowConfig(!showConfig)}
-          className="p-2 hover:bg-gray-100 rounded-lg transition-colors text-gray-500 hover:text-gray-700"
-          title="配置"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/>
-            <circle cx="12" cy="12" r="3"/>
-          </svg>
-        </button>
-      </header>
-
-      {/* Main Content */}
-      <div className="flex flex-1 min-h-0">
-        {/* Left: Preview */}
-        <div className="flex-1 overflow-y-auto p-8">
-          <Preview
-            pages={pages}
-            config={config}
-          />
-        </div>
-
-        {/* Right: Editor + Actions */}
-        <div className="w-[400px] flex flex-col bg-white border-l border-gray-200/80 shrink-0 shadow-sm ml-2">
-          <div className="flex-1 min-h-0">
-            <Editor text={text} onChange={setText} />
+    <div className="h-full p-10 bg-gray-200">
+      <div className="h-full flex flex-col bg-gray-50 overflow-hidden shadow-sm ring-1 ring-black/5">
+        {/* Header */}
+        <header className="flex items-center justify-between px-8 py-4 bg-white/80 backdrop-blur border-b border-gray-200/60 shrink-0">
+          <div className="flex items-center gap-2">
+            <h1 className="text-lg font-semibold tracking-tight text-gray-900">STools</h1>
+            <span className="text-xs text-gray-300 font-light">*</span>
+            <span className="text-lg font-semibold tracking-tight text-gray-900">Pub</span>
           </div>
-          <ActionBar
-            onGenerate={handleGenerate}
-            onDownload={handleDownload}
-            hasPages={pages.length > 0}
-            isExporting={isExporting}
-          />
+          <button
+            onClick={() => setShowConfig(!showConfig)}
+            className="p-2 hover:bg-gray-100 rounded-lg transition-colors text-gray-400 hover:text-gray-600"
+            title="配置"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/>
+              <circle cx="12" cy="12" r="3"/>
+            </svg>
+          </button>
+        </header>
+
+        {/* Main Content */}
+        <div className="flex flex-1 min-h-0">
+          {/* Left: Preview */}
+          <div className="flex-1 overflow-y-auto p-8">
+            <Preview
+              pages={pages}
+              config={config}
+            />
+          </div>
+
+          {/* Right: Editor + Actions */}
+          <div className="w-[400px] flex flex-col bg-white border-l border-gray-200/80 shrink-0 shadow-sm ml-2">
+            <div className="flex-1 min-h-0">
+              <Editor text={text} onChange={setText} />
+            </div>
+            <ActionBar
+              onGenerate={handleGenerate}
+              onDownload={handleDownload}
+              hasPages={pages.length > 0}
+              isExporting={isExporting}
+            />
+          </div>
         </div>
       </div>
 
