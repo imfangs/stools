@@ -63,10 +63,11 @@ fi
 git checkout gh-pages
 ON_GHPAGES=true
 
-# 清除旧文件（保留 .git）
+# 清除旧文件（保留 .git 和 node_modules）
 find . -maxdepth 1 \
   ! -name '.' \
   ! -name '.git' \
+  ! -name 'node_modules' \
   -exec rm -rf {} +
 
 # 复制新构建产物
