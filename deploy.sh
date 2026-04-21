@@ -45,6 +45,13 @@ fi
 echo "构建中..."
 npm run build
 
+# 提交版本号递增
+if ! git diff --quiet package.json package-lock.json; then
+  git add package.json package-lock.json
+  git commit -m "chore: bump version to $(node -p 'require(\"./package.json\").version')"
+  git push origin main
+fi
+
 # 复制构建产物到临时目录
 rm -rf "$DIST_TMP"
 cp -r dist "$DIST_TMP"
