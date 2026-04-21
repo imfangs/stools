@@ -400,7 +400,7 @@ export default function App() {
             <span className="text-lg font-semibold tracking-tight text-gray-900">Pub</span>
           </div>
           <div className="flex items-center gap-2">
-          <span className="text-[11px] text-gray-300 font-mono select-all" title="构建版本号">{__BUILD_TIME__}.{__BUILD_NUMBER__}</span>
+          <span className="text-[11px] text-gray-300 font-mono select-all" title="版本号">v{__APP_VERSION__}</span>
           <button
             onClick={() => setShowConfig(!showConfig)}
             className="p-2 hover:bg-gray-100 rounded-lg transition-colors text-gray-400 hover:text-gray-600"

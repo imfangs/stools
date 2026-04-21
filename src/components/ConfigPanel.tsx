@@ -35,6 +35,7 @@ const fields: FieldDef[] = [
   { key: 'bodyLineHeight', label: '正文行高', type: 'number', group: '正文样式' },
   { key: 'bodyLetterSpacing', label: '正文字间距', type: 'number', group: '正文样式' },
   { key: 'bodyMarginBottom', label: '正文下间距', type: 'number', group: '正文样式' },
+  { key: 'dividerHeight', label: '分割线高度', type: 'number', group: '分割线' },
   { key: 'dividerMarginY', label: '分割线间距', type: 'number', group: '分割线' },
   { key: 'dividerColor', label: '分割线颜色', type: 'text', group: '分割线' },
   { key: 'emptyLineHeight', label: '空行高度', type: 'number', group: '空行' },
