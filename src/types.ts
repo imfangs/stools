@@ -32,8 +32,5 @@ export interface LayoutConfig {
   backgroundColor: string;
   textColor: string;
   fontFamily: string;
-  showPageNumber: boolean;
-  pageNumberFontSize: number;
-  pageNumberColor: string;
   previewColumns: number;
 }

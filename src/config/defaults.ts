@@ -29,9 +29,5 @@ export const defaultConfig: LayoutConfig = {
   textColor: '#FFFFFF',
   fontFamily: '-apple-system, "PingFang SC", "Helvetica Neue", "Noto Sans SC", sans-serif',
 
-  showPageNumber: true,
-  pageNumberFontSize: 24,
-  pageNumberColor: 'rgba(255,255,255,0.3)',
-
   previewColumns: 4,
 };

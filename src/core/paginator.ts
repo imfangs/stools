@@ -84,7 +84,9 @@ export function measureWithDOM(
       container.appendChild(node);
 
       const rect = node.getBoundingClientRect();
-      heights.set(index, rect.height);
+      const style = window.getComputedStyle(node);
+      const marginBottom = parseFloat(style.marginBottom) || 0;
+      heights.set(index, rect.height + marginBottom);
       container.removeChild(node);
     });
   } finally {
@@ -105,12 +107,8 @@ export function paginate(
   elements: ParsedElement[],
   config: LayoutConfig,
 ): Page[] {
-  // Reserve space for page number if enabled
-  const pageNumberReserve = config.showPageNumber
-    ? config.pageNumberFontSize * 1.5
-    : 0;
   const availableHeight =
-    config.imageHeight - config.paddingTop - config.paddingBottom - pageNumberReserve;
+    config.imageHeight - config.paddingTop - config.paddingBottom;
   const heights = measureWithDOM(elements, config);
 
   const pages: Page[] = [];

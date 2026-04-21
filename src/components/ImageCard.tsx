@@ -100,6 +100,7 @@ export default function ImageCard({ page, config }: ImageCardProps) {
             top: 0,
             left: 0,
             boxSizing: 'border-box',
+            overflow: 'hidden',
             width: config.imageWidth,
             height: config.imageHeight,
             backgroundColor: config.backgroundColor,
@@ -113,21 +114,6 @@ export default function ImageCard({ page, config }: ImageCardProps) {
           }}
         >
           {page.elements.map((el, i) => renderElement(el, i, config))}
-
-          {/* Page number */}
-          {config.showPageNumber && (
-            <div
-              style={{
-                position: 'absolute',
-                bottom: config.paddingBottom / 2,
-                right: config.paddingRight,
-                fontSize: config.pageNumberFontSize,
-                color: config.pageNumberColor,
-              }}
-            >
-              {page.index + 1}
-            </div>
-          )}
         </div>
       </div>
       <div className="text-center text-[10px] text-gray-400 font-mono tracking-wide">

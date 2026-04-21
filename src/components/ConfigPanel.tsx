@@ -14,7 +14,7 @@ type ConfigKey = keyof LayoutConfig;
 interface FieldDef {
   key: ConfigKey;
   label: string;
-  type: 'number' | 'color' | 'text' | 'boolean';
+  type: 'number' | 'color' | 'text';
   group: string;
 }
 
@@ -39,9 +39,6 @@ const fields: FieldDef[] = [
   { key: 'backgroundColor', label: '背景色', type: 'text', group: '颜色' },
   { key: 'textColor', label: '文字色', type: 'text', group: '颜色' },
   { key: 'fontFamily', label: '字体', type: 'text', group: '字体' },
-  { key: 'showPageNumber', label: '显示页码', type: 'boolean', group: '页码' },
-  { key: 'pageNumberFontSize', label: '页码字号', type: 'number', group: '页码' },
-  { key: 'pageNumberColor', label: '页码颜色', type: 'text', group: '页码' },
   { key: 'previewColumns', label: '预览列数', type: 'number', group: '预览' },
 ];
 
@@ -103,14 +100,7 @@ export default function ConfigPanel({ config, onChange, onReset, onClose }: Conf
                   .map((field) => (
                     <div key={field.key} className="flex items-center justify-between gap-2">
                       <label className="text-sm text-gray-600 shrink-0">{field.label}</label>
-                      {field.type === 'boolean' ? (
-                        <input
-                          type="checkbox"
-                          checked={config[field.key] as boolean}
-                          onChange={(e) => handleChange(field.key, e.target.checked)}
-                          className="accent-black"
-                        />
-                      ) : field.type === 'number' ? (
+                      {field.type === 'number' ? (
                         <input
                           type="number"
                           value={config[field.key] as number}

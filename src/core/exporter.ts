@@ -19,20 +19,6 @@ function buildPageDOM(page: Page, config: LayoutConfig): HTMLElement {
     container.appendChild(buildElementDOM(el, config));
   }
 
-  if (config.showPageNumber) {
-    const pageNum = document.createElement('div');
-    pageNum.style.cssText = `
-      position: absolute;
-      bottom: ${config.paddingBottom / 2}px;
-      right: ${config.paddingRight}px;
-      font-size: ${config.pageNumberFontSize}px;
-      color: ${config.pageNumberColor};
-      font-family: ${config.fontFamily};
-    `;
-    pageNum.textContent = String(page.index + 1);
-    container.appendChild(pageNum);
-  }
-
   return container;
 }
 
