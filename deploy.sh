@@ -63,11 +63,12 @@ fi
 git checkout gh-pages
 ON_GHPAGES=true
 
-# 清除旧文件（保留 .git 和 node_modules）
+# 清除旧文件（保留 .git、node_modules、.vite）
 find . -maxdepth 1 \
   ! -name '.' \
   ! -name '.git' \
   ! -name 'node_modules' \
+  ! -name '.vite' \
   -exec rm -rf {} +
 
 # 复制新构建产物
@@ -75,8 +76,8 @@ cp -r "$DIST_TMP"/* .
 touch .nojekyll
 echo "st.fangs.cc" > CNAME
 
-# 提交并推送
-git add -A
+# 提交并推送（排除 node_modules 和 .vite）
+git add -A -- ':!node_modules' ':!.vite'
 
 if git diff --cached --quiet; then
   echo "没有变化，跳过部署"
