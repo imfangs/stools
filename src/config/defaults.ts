@@ -1,8 +1,8 @@
 import type { LayoutConfig } from '../types';
 
 export const defaultConfig: LayoutConfig = {
-  imageWidth: 1080,
-  imageHeight: 1440,
+  imageWidth: 1170,
+  imageHeight: 1560,
 
   paddingTop: 120,
   paddingBottom: 120,
