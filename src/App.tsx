@@ -399,6 +399,8 @@ export default function App() {
             <span className="w-1.5 h-1.5 rounded-full bg-black"></span>
             <span className="text-lg font-semibold tracking-tight text-gray-900">Pub</span>
           </div>
+          <div className="flex items-center gap-2">
+          <span className="text-[11px] text-gray-300 font-mono select-all" title="构建版本号">{__BUILD_TIME__}.{__BUILD_NUMBER__}</span>
           <button
             onClick={() => setShowConfig(!showConfig)}
             className="p-2 hover:bg-gray-100 rounded-lg transition-colors text-gray-400 hover:text-gray-600"
@@ -409,6 +411,7 @@ export default function App() {
               <circle cx="12" cy="12" r="3"/>
             </svg>
           </button>
+          </div>
         </header>
 
         {/* Main Content */}
