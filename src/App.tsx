@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback } from 'react';
+import { useState, useRef, useCallback, useEffect } from 'react';
 import type { Page, LayoutConfig } from './types';
 import { parseText } from './core/parser';
 import { paginate } from './core/paginator';
@@ -43,11 +43,20 @@ export default function App() {
   const [isExporting, setIsExporting] = useState(false);
   const pageRefs = useRef<Map<number, HTMLDivElement>>(new Map());
 
-  const handleGenerate = useCallback(() => {
-    const elements = parseText(text);
-    const result = paginate(elements, config);
+  const generate = useCallback((t: string, c: LayoutConfig) => {
+    const elements = parseText(t);
+    const result = paginate(elements, c);
     setPages(result);
-  }, [text, config]);
+  }, []);
+
+  const handleGenerate = useCallback(() => {
+    generate(text, config);
+  }, [text, config, generate]);
+
+  // Auto-generate on mount and when config changes
+  useEffect(() => {
+    generate(text, config);
+  }, [config]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleDownload = useCallback(async () => {
     if (pages.length === 0) return;

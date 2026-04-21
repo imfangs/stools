@@ -105,7 +105,12 @@ export function paginate(
   elements: ParsedElement[],
   config: LayoutConfig,
 ): Page[] {
-  const availableHeight = config.imageHeight - config.paddingTop - config.paddingBottom;
+  // Reserve space for page number if enabled
+  const pageNumberReserve = config.showPageNumber
+    ? config.pageNumberFontSize * 1.5
+    : 0;
+  const availableHeight =
+    config.imageHeight - config.paddingTop - config.paddingBottom - pageNumberReserve;
   const heights = measureWithDOM(elements, config);
 
   const pages: Page[] = [];
@@ -117,9 +122,14 @@ export function paginate(
     const h = heights.get(i) || 0;
 
     if (currentHeight + h > availableHeight && currentPage.length > 0) {
-      pages.push({ elements: currentPage, index: pages.length });
+      pages.push({ elements: trimPageElements(currentPage), index: pages.length });
       currentPage = [];
       currentHeight = 0;
+    }
+
+    // Skip leading empty lines on new pages
+    if (currentPage.length === 0 && el.type === 'empty-line') {
+      continue;
     }
 
     currentPage.push(el);
@@ -127,8 +137,22 @@ export function paginate(
   }
 
   if (currentPage.length > 0) {
-    pages.push({ elements: currentPage, index: pages.length });
+    pages.push({ elements: trimPageElements(currentPage), index: pages.length });
   }
 
   return pages;
+}
+
+/** Remove trailing empty-lines and dividers from a page */
+function trimPageElements(elements: ParsedElement[]): ParsedElement[] {
+  let end = elements.length;
+  while (end > 0) {
+    const type = elements[end - 1].type;
+    if (type === 'empty-line' || type === 'divider') {
+      end--;
+    } else {
+      break;
+    }
+  }
+  return elements.slice(0, end);
 }

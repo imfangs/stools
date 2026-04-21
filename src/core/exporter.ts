@@ -3,11 +3,15 @@ import JSZip from 'jszip';
 import { saveAs } from 'file-saver';
 
 export async function captureElement(element: HTMLElement): Promise<Blob> {
+  // The element is already rendered at full resolution (e.g. 1080x1440).
+  // Use scale=1 to capture at that exact pixel size.
   const canvas = await html2canvas(element, {
-    scale: 2,
+    scale: 1,
     useCORS: true,
     backgroundColor: null,
     logging: false,
+    width: element.offsetWidth,
+    height: element.offsetHeight,
   });
 
   return new Promise((resolve, reject) => {
