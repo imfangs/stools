@@ -157,10 +157,19 @@ export function paginate(
   return pages;
 }
 
-/** Remove trailing empty-lines and dividers from a page */
+/** Remove leading/trailing empty-lines and dividers from a page */
 function trimPageElements(elements: ParsedElement[]): ParsedElement[] {
+  let start = 0;
+  while (start < elements.length) {
+    const type = elements[start].type;
+    if (type === 'empty-line' || type === 'divider') {
+      start++;
+    } else {
+      break;
+    }
+  }
   let end = elements.length;
-  while (end > 0) {
+  while (end > start) {
     const type = elements[end - 1].type;
     if (type === 'empty-line' || type === 'divider' || type === 'page-break') {
       end--;
@@ -168,5 +177,5 @@ function trimPageElements(elements: ParsedElement[]): ParsedElement[] {
       break;
     }
   }
-  return elements.slice(0, end);
+  return elements.slice(start, end);
 }
