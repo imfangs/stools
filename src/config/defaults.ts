@@ -12,11 +12,13 @@ export const defaultConfig: LayoutConfig = {
   h1FontSize: 76,
   h1FontWeight: 700,
   h1LineHeight: 1.2,
+  h1LetterSpacing: 0,
   h1MarginBottom: 40,
 
   bodyFontSize: 40,
   bodyFontWeight: 400,
   bodyLineHeight: 1,
+  bodyLetterSpacing: 0,
   bodyMarginBottom: 20,
 
   dividerHeight: 1,

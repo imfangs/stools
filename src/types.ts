@@ -20,10 +20,12 @@ export interface LayoutConfig {
   h1FontSize: number;
   h1FontWeight: number;
   h1LineHeight: number;
+  h1LetterSpacing: number;
   h1MarginBottom: number;
   bodyFontSize: number;
   bodyFontWeight: number;
   bodyLineHeight: number;
+  bodyLetterSpacing: number;
   bodyMarginBottom: number;
   dividerHeight: number;
   dividerColor: string;

@@ -72,6 +72,7 @@ export function measureWithDOM(
           font-size: ${config.h1FontSize}px;
           font-weight: ${config.h1FontWeight};
           line-height: ${config.h1LineHeight};
+          letter-spacing: ${config.h1LetterSpacing}px;
           margin-bottom: ${config.h1MarginBottom}px;
           word-wrap: break-word;
           overflow-wrap: break-word;
@@ -81,6 +82,7 @@ export function measureWithDOM(
           font-size: ${config.bodyFontSize}px;
           font-weight: ${config.bodyFontWeight};
           line-height: ${config.bodyLineHeight};
+          letter-spacing: ${config.bodyLetterSpacing}px;
           margin-bottom: ${config.bodyMarginBottom}px;
           word-wrap: break-word;
           overflow-wrap: break-word;

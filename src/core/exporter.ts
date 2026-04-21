@@ -38,6 +38,7 @@ function buildElementDOM(el: ParsedElement, config: LayoutConfig, nextType?: str
         font-size: ${config.h1FontSize}px;
         font-weight: ${config.h1FontWeight};
         line-height: ${config.h1LineHeight};
+        letter-spacing: ${config.h1LetterSpacing}px;
         margin-bottom: ${beforeDivider ? 0 : config.h1MarginBottom}px;
         color: ${config.textColor};
         word-wrap: break-word;
@@ -50,6 +51,7 @@ function buildElementDOM(el: ParsedElement, config: LayoutConfig, nextType?: str
         font-size: ${config.bodyFontSize}px;
         font-weight: ${config.bodyFontWeight};
         line-height: ${config.bodyLineHeight};
+        letter-spacing: ${config.bodyLetterSpacing}px;
         margin-bottom: ${beforeDivider ? 0 : config.bodyMarginBottom}px;
         color: ${config.textColor};
         word-wrap: break-word;
