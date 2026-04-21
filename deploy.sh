@@ -48,7 +48,7 @@ npm run build
 # 提交版本号递增
 if ! git diff --quiet package.json package-lock.json; then
   git add package.json package-lock.json
-  git commit -m "chore: bump version to $(node -p 'require(\"./package.json\").version')"
+  git commit -m "chore: bump version to $(node -p "require('./package.json').version")"
   git push origin main
 fi
 
