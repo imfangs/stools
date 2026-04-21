@@ -22,6 +22,8 @@ function measureElementHeight(
       return config.dividerHeight + config.dividerMarginY * 2;
     case 'empty-line':
       return config.emptyLineHeight;
+    case 'page-break':
+      return 0;
     default:
       return 0;
   }
@@ -51,6 +53,10 @@ export function measureWithDOM(
 
   try {
     elements.forEach((el, index) => {
+      if (el.type === 'page-break') {
+        heights.set(index, 0);
+        return;
+      }
       if (el.type === 'divider') {
         heights.set(index, config.dividerHeight + config.dividerMarginY * 2);
         return;
@@ -119,6 +125,16 @@ export function paginate(
     const el = elements[i];
     const h = heights.get(i) || 0;
 
+    // Explicit page break: flush current page and start fresh
+    if (el.type === 'page-break') {
+      if (currentPage.length > 0) {
+        pages.push({ elements: trimPageElements(currentPage), index: pages.length });
+        currentPage = [];
+        currentHeight = 0;
+      }
+      continue;
+    }
+
     if (currentHeight + h > availableHeight && currentPage.length > 0) {
       pages.push({ elements: trimPageElements(currentPage), index: pages.length });
       currentPage = [];
@@ -146,7 +162,7 @@ function trimPageElements(elements: ParsedElement[]): ParsedElement[] {
   let end = elements.length;
   while (end > 0) {
     const type = elements[end - 1].type;
-    if (type === 'empty-line' || type === 'divider') {
+    if (type === 'empty-line' || type === 'divider' || type === 'page-break') {
       end--;
     } else {
       break;

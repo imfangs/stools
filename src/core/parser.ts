@@ -9,6 +9,8 @@ export function parseText(text: string): ParsedElement[] {
 
     if (trimmed === '') {
       elements.push({ type: 'empty-line', content: '' });
+    } else if (/^===+$/.test(trimmed)) {
+      elements.push({ type: 'page-break', content: '' });
     } else if (/^---+$/.test(trimmed)) {
       elements.push({ type: 'divider', content: '' });
     } else if (trimmed.startsWith('# ')) {

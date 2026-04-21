@@ -8,7 +8,7 @@ export default function Editor({ text, onChange }: EditorProps) {
     <div className="h-full flex flex-col">
       <div className="px-5 py-3 border-b border-gray-100">
         <span className="text-xs text-gray-400">
-          支持 # 标题、--- 分割线、空行控制分页
+          支持 # 标题、--- 分割线、=== 强制分页、空行控制间距
         </span>
       </div>
       <textarea

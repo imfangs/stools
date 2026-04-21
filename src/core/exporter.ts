@@ -13,11 +13,16 @@ function buildPageDOM(page: Page, config: LayoutConfig): HTMLElement {
     font-family: ${config.fontFamily};
     position: relative;
     box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
   `;
 
+  const inner = document.createElement('div');
   for (const el of page.elements) {
-    container.appendChild(buildElementDOM(el, config));
+    inner.appendChild(buildElementDOM(el, config));
   }
+  container.appendChild(inner);
 
   return container;
 }
@@ -60,6 +65,9 @@ function buildElementDOM(el: ParsedElement, config: LayoutConfig): HTMLElement {
       break;
     case 'empty-line':
       node.style.cssText = `height: ${config.emptyLineHeight}px;`;
+      break;
+    case 'page-break':
+      node.style.cssText = 'display: none;';
       break;
   }
 

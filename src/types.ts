@@ -1,4 +1,4 @@
-export type ElementType = 'h1' | 'body' | 'divider' | 'empty-line';
+export type ElementType = 'h1' | 'body' | 'divider' | 'empty-line' | 'page-break';
 
 export interface ParsedElement {
   type: ElementType;

@@ -61,6 +61,8 @@ function renderElement(el: ParsedElement, index: number, config: LayoutConfig) {
           style={{ height: config.emptyLineHeight }}
         />
       );
+    case 'page-break':
+      return null;
     default:
       return null;
   }
@@ -111,9 +113,14 @@ export default function ImageCard({ page, config }: ImageCardProps) {
             fontFamily: config.fontFamily,
             transformOrigin: 'top left',
             transform: `scale(${scale})`,
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
           }}
         >
-          {page.elements.map((el, i) => renderElement(el, i, config))}
+          <div>
+            {page.elements.map((el, i) => renderElement(el, i, config))}
+          </div>
         </div>
       </div>
       <div className="text-center text-[10px] text-gray-400 font-mono tracking-wide">
