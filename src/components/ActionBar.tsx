@@ -12,17 +12,17 @@ export default function ActionBar({
   isExporting,
 }: ActionBarProps) {
   return (
-    <div className="flex gap-3 p-4 border-t border-gray-200 bg-white">
+    <div className="flex flex-col gap-2 px-5 py-4 border-t border-gray-100 bg-white">
       <button
         onClick={onGenerate}
-        className="flex-1 py-2.5 bg-black text-white text-sm font-medium rounded-lg hover:bg-gray-800 active:bg-gray-900 transition-colors"
+        className="w-full py-3.5 bg-gray-900 text-white text-sm font-medium hover:bg-gray-800 active:bg-black transition-colors"
       >
         生成图片
       </button>
       <button
         onClick={onDownload}
         disabled={!hasPages || isExporting}
-        className="flex-1 py-2.5 border border-black text-sm font-medium rounded-lg hover:bg-gray-50 active:bg-gray-100 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+        className="w-full py-3.5 bg-gray-900 text-white text-sm font-medium hover:bg-gray-800 active:bg-black transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
       >
         {isExporting ? '导出中...' : '下载图片'}
       </button>

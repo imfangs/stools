@@ -33,5 +33,5 @@ export const defaultConfig: LayoutConfig = {
   pageNumberFontSize: 24,
   pageNumberColor: 'rgba(255,255,255,0.3)',
 
-  previewColumns: 3,
+  previewColumns: 4,
 };

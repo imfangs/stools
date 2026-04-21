@@ -1,4 +1,4 @@
-import { forwardRef, useRef, useEffect, useState } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import type { Page, LayoutConfig, ParsedElement } from '../types';
 
 interface ImageCardProps {
@@ -66,79 +66,72 @@ function renderElement(el: ParsedElement, index: number, config: LayoutConfig) {
   }
 }
 
-const ImageCard = forwardRef<HTMLDivElement, ImageCardProps>(
-  ({ page, config }, ref) => {
-    const containerRef = useRef<HTMLDivElement>(null);
-    const [scale, setScale] = useState(0.2);
+export default function ImageCard({ page, config }: ImageCardProps) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [scale, setScale] = useState(0.2);
 
-    useEffect(() => {
-      const container = containerRef.current;
-      if (!container) return;
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
 
-      const updateScale = () => {
-        const width = container.clientWidth;
-        setScale(width / config.imageWidth);
-      };
+    const updateScale = () => {
+      const width = container.clientWidth;
+      setScale(width / config.imageWidth);
+    };
 
-      updateScale();
-      const observer = new ResizeObserver(updateScale);
-      observer.observe(container);
-      return () => observer.disconnect();
-    }, [config.imageWidth]);
+    updateScale();
+    const observer = new ResizeObserver(updateScale);
+    observer.observe(container);
+    return () => observer.disconnect();
+  }, [config.imageWidth]);
 
-    return (
-      <div className="flex flex-col gap-2">
-        {/* Aspect Ratio Container */}
+  return (
+    <div className="flex flex-col gap-1.5">
+      {/* Aspect Ratio Container */}
+      <div
+        ref={containerRef}
+        className="w-full relative overflow-hidden shadow-sm ring-1 ring-black/5"
+        style={{ aspectRatio: `${config.imageWidth} / ${config.imageHeight}` }}
+      >
+        {/* Scaled Preview Content */}
         <div
-          ref={containerRef}
-          className="w-full relative bg-white shadow-md border border-gray-200 rounded overflow-hidden"
-          style={{ aspectRatio: `${config.imageWidth} / ${config.imageHeight}` }}
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: config.imageWidth,
+            height: config.imageHeight,
+            backgroundColor: config.backgroundColor,
+            paddingTop: config.paddingTop,
+            paddingBottom: config.paddingBottom,
+            paddingLeft: config.paddingLeft,
+            paddingRight: config.paddingRight,
+            fontFamily: config.fontFamily,
+            transformOrigin: 'top left',
+            transform: `scale(${scale})`,
+          }}
         >
-          {/* Real Resolution Content (Scaled for Preview) */}
-          <div
-            ref={ref}
-            style={{
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              width: config.imageWidth,
-              height: config.imageHeight,
-              backgroundColor: config.backgroundColor,
-              paddingTop: config.paddingTop,
-              paddingBottom: config.paddingBottom,
-              paddingLeft: config.paddingLeft,
-              paddingRight: config.paddingRight,
-              fontFamily: config.fontFamily,
-              transformOrigin: 'top left',
-              transform: `scale(${scale})`,
-            }}
-          >
-            {page.elements.map((el, i) => renderElement(el, i, config))}
+          {page.elements.map((el, i) => renderElement(el, i, config))}
 
-            {/* Page number */}
-            {config.showPageNumber && (
-              <div
-                style={{
-                  position: 'absolute',
-                  bottom: config.paddingBottom / 2,
-                  right: config.paddingRight,
-                  fontSize: config.pageNumberFontSize,
-                  color: config.pageNumberColor,
-                }}
-              >
-                {page.index + 1}
-              </div>
-            )}
-          </div>
-        </div>
-        <div className="text-center text-[10px] text-gray-400 font-mono">
-          IMAGE {page.index + 1} ({config.imageWidth}x{config.imageHeight})
+          {/* Page number */}
+          {config.showPageNumber && (
+            <div
+              style={{
+                position: 'absolute',
+                bottom: config.paddingBottom / 2,
+                right: config.paddingRight,
+                fontSize: config.pageNumberFontSize,
+                color: config.pageNumberColor,
+              }}
+            >
+              {page.index + 1}
+            </div>
+          )}
         </div>
       </div>
-    );
-  },
-);
-
-ImageCard.displayName = 'ImageCard';
-
-export default ImageCard;
+      <div className="text-center text-[10px] text-gray-400 font-mono tracking-wide">
+        {page.index + 1} / {config.imageWidth}×{config.imageHeight}
+      </div>
+    </div>
+  );
+}
