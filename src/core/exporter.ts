@@ -19,16 +19,18 @@ function buildPageDOM(page: Page, config: LayoutConfig): HTMLElement {
   `;
 
   const inner = document.createElement('div');
-  for (const el of page.elements) {
-    inner.appendChild(buildElementDOM(el, config));
+  for (let i = 0; i < page.elements.length; i++) {
+    const nextType = page.elements[i + 1]?.type;
+    inner.appendChild(buildElementDOM(page.elements[i], config, nextType));
   }
   container.appendChild(inner);
 
   return container;
 }
 
-function buildElementDOM(el: ParsedElement, config: LayoutConfig): HTMLElement {
+function buildElementDOM(el: ParsedElement, config: LayoutConfig, nextType?: string): HTMLElement {
   const node = document.createElement('div');
+  const beforeDivider = nextType === 'divider';
 
   switch (el.type) {
     case 'h1':
@@ -36,7 +38,7 @@ function buildElementDOM(el: ParsedElement, config: LayoutConfig): HTMLElement {
         font-size: ${config.h1FontSize}px;
         font-weight: ${config.h1FontWeight};
         line-height: ${config.h1LineHeight};
-        margin-bottom: ${config.h1MarginBottom}px;
+        margin-bottom: ${beforeDivider ? 0 : config.h1MarginBottom}px;
         color: ${config.textColor};
         word-wrap: break-word;
         overflow-wrap: break-word;
@@ -48,7 +50,7 @@ function buildElementDOM(el: ParsedElement, config: LayoutConfig): HTMLElement {
         font-size: ${config.bodyFontSize}px;
         font-weight: ${config.bodyFontWeight};
         line-height: ${config.bodyLineHeight};
-        margin-bottom: ${config.bodyMarginBottom}px;
+        margin-bottom: ${beforeDivider ? 0 : config.bodyMarginBottom}px;
         color: ${config.textColor};
         word-wrap: break-word;
         overflow-wrap: break-word;

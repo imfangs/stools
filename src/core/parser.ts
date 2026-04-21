@@ -20,5 +20,12 @@ export function parseText(text: string): ParsedElement[] {
     }
   }
 
-  return elements;
+  // Remove empty lines adjacent to dividers — dividerMarginY handles spacing
+  return elements.filter((el, i) => {
+    if (el.type !== 'empty-line') return true;
+    const prev = elements[i - 1];
+    const next = elements[i + 1];
+    if (prev?.type === 'divider' || next?.type === 'divider') return false;
+    return true;
+  });
 }

@@ -123,7 +123,15 @@ export function paginate(
 
   for (let i = 0; i < elements.length; i++) {
     const el = elements[i];
-    const h = heights.get(i) || 0;
+    let h = heights.get(i) || 0;
+
+    // If this element is followed by a divider, remove its marginBottom
+    // to avoid double spacing (divider already has its own marginTop)
+    const nextEl = elements[i + 1];
+    if (nextEl?.type === 'divider' && (el.type === 'h1' || el.type === 'body')) {
+      const mb = el.type === 'h1' ? config.h1MarginBottom : config.bodyMarginBottom;
+      h -= mb;
+    }
 
     // Explicit page break: flush current page and start fresh
     if (el.type === 'page-break') {

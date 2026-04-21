@@ -6,7 +6,8 @@ interface ImageCardProps {
   config: LayoutConfig;
 }
 
-function renderElement(el: ParsedElement, index: number, config: LayoutConfig) {
+function renderElement(el: ParsedElement, index: number, config: LayoutConfig, nextType?: string) {
+  const beforeDivider = nextType === 'divider';
   switch (el.type) {
     case 'h1':
       return (
@@ -16,7 +17,7 @@ function renderElement(el: ParsedElement, index: number, config: LayoutConfig) {
             fontSize: config.h1FontSize,
             fontWeight: config.h1FontWeight,
             lineHeight: config.h1LineHeight,
-            marginBottom: config.h1MarginBottom,
+            marginBottom: beforeDivider ? 0 : config.h1MarginBottom,
             color: config.textColor,
             wordWrap: 'break-word',
             overflowWrap: 'break-word',
@@ -33,7 +34,7 @@ function renderElement(el: ParsedElement, index: number, config: LayoutConfig) {
             fontSize: config.bodyFontSize,
             fontWeight: config.bodyFontWeight,
             lineHeight: config.bodyLineHeight,
-            marginBottom: config.bodyMarginBottom,
+            marginBottom: beforeDivider ? 0 : config.bodyMarginBottom,
             color: config.textColor,
             wordWrap: 'break-word',
             overflowWrap: 'break-word',
@@ -119,7 +120,7 @@ export default function ImageCard({ page, config }: ImageCardProps) {
           }}
         >
           <div>
-            {page.elements.map((el, i) => renderElement(el, i, config))}
+            {page.elements.map((el, i) => renderElement(el, i, config, page.elements[i + 1]?.type))}
           </div>
         </div>
       </div>
