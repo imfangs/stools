@@ -3,6 +3,38 @@ import JSZip from 'jszip';
 import { saveAs } from 'file-saver';
 import type { Page, LayoutConfig, ParsedElement } from '../types';
 
+/**
+ * Workaround for html2canvas-pro baseline bug:
+ * When CSS letter-spacing !== 0, html2canvas renders each character individually
+ * and applies different baselines for CJK vs non-CJK characters (e.g. ①, 01),
+ * causing vertical misalignment. We simulate letter-spacing with per-grapheme
+ * <span> elements + margin-right so html2canvas always sees letter-spacing: 0.
+ */
+function applyLetterSpacingAsMargins(
+  parent: HTMLElement,
+  text: string,
+  letterSpacing: number,
+): void {
+  if (letterSpacing === 0) {
+    parent.textContent = text;
+    return;
+  }
+
+  parent.style.letterSpacing = '0px';
+
+  const segmenter = new Intl.Segmenter(undefined, { granularity: 'grapheme' });
+  const graphemes = Array.from(segmenter.segment(text), (s) => s.segment);
+
+  for (let i = 0; i < graphemes.length; i++) {
+    const span = document.createElement('span');
+    span.textContent = graphemes[i];
+    if (i < graphemes.length - 1) {
+      span.style.marginRight = `${letterSpacing}px`;
+    }
+    parent.appendChild(span);
+  }
+}
+
 function buildPageDOM(page: Page, config: LayoutConfig): HTMLElement {
   const container = document.createElement('div');
   container.style.cssText = `
@@ -44,7 +76,7 @@ function buildElementDOM(el: ParsedElement, config: LayoutConfig, nextType?: str
         word-wrap: break-word;
         overflow-wrap: break-word;
       `;
-      node.textContent = el.content;
+      applyLetterSpacingAsMargins(node, el.content, config.h1LetterSpacing);
       break;
     case 'body':
       node.style.cssText = `
@@ -57,7 +89,7 @@ function buildElementDOM(el: ParsedElement, config: LayoutConfig, nextType?: str
         word-wrap: break-word;
         overflow-wrap: break-word;
       `;
-      node.textContent = el.content;
+      applyLetterSpacingAsMargins(node, el.content, config.bodyLetterSpacing);
       break;
     case 'divider':
       node.style.cssText = `

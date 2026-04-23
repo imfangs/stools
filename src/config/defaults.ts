@@ -6,14 +6,14 @@ export const defaultConfig: LayoutConfig = {
 
   paddingTop: 120,
   paddingBottom: 120,
-  paddingLeft: 80,
-  paddingRight: 80,
+  paddingLeft: 60,
+  paddingRight: 60,
 
   h1FontSize: 79,
   h1FontWeight: 700,
   h1LineHeight: 1.2,
-  h1LetterSpacing: 0,
-  h1MarginBottom: 12,
+  h1LetterSpacing: 1,
+  h1MarginBottom: 8,
 
   bodyFontSize: 48,
   bodyFontWeight: 400,
@@ -31,5 +31,5 @@ export const defaultConfig: LayoutConfig = {
   textColor: '#FFFFFF',
   fontFamily: '-apple-system, "PingFang SC", "Helvetica Neue", "Noto Sans SC", sans-serif',
 
-  previewColumns: 2,
+  previewColumns: 3,
 };
