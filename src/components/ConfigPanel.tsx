@@ -11,11 +11,17 @@ interface ConfigPanelProps {
 
 type ConfigKey = keyof LayoutConfig;
 
+interface SelectOption {
+  value: string;
+  label: string;
+}
+
 interface FieldDef {
   key: ConfigKey;
   label: string;
-  type: 'number' | 'color' | 'text';
+  type: 'number' | 'color' | 'text' | 'boolean' | 'select';
   group: string;
+  options?: SelectOption[];
 }
 
 const fields: FieldDef[] = [
@@ -43,6 +49,21 @@ const fields: FieldDef[] = [
   { key: 'textColor', label: '文字色', type: 'text', group: '颜色' },
   { key: 'fontFamily', label: '字体', type: 'text', group: '字体' },
   { key: 'previewColumns', label: '预览列数', type: 'number', group: '预览' },
+  { key: 'cjkNumberSpacing', label: '中数间距', type: 'boolean', group: '排版增强' },
+  { key: 'cjkQuoteSpacing', label: '中引间距', type: 'boolean', group: '排版增强' },
+  {
+    key: 'arrowStyle',
+    label: '箭头样式',
+    type: 'select',
+    group: '排版增强',
+    options: [
+      { value: 'original', label: '原始 →' },
+      { value: 'short-bold', label: '粗短 ➜' },
+      { value: 'triangle', label: '三角 ▸' },
+      { value: 'long', label: '细长 ⟶' },
+    ],
+  },
+  { key: 'emDashSeamless', label: '破折号无缝', type: 'boolean', group: '排版增强' },
 ];
 
 export default function ConfigPanel({ config, onChange, onReset, onClose }: ConfigPanelProps) {
@@ -110,6 +131,32 @@ export default function ConfigPanel({ config, onChange, onReset, onClose }: Conf
                           onChange={(e) => handleChange(field.key, parseFloat(e.target.value) || 0)}
                           className="w-24 px-2 py-1 border border-gray-200 rounded text-sm text-right"
                         />
+                      ) : field.type === 'boolean' ? (
+                        <button
+                          type="button"
+                          onClick={() => handleChange(field.key, !config[field.key])}
+                          className={`relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors ${
+                            config[field.key] ? 'bg-blue-500' : 'bg-gray-200'
+                          }`}
+                        >
+                          <span
+                            className={`pointer-events-none inline-block h-4 w-4 rounded-full bg-white shadow transform transition-transform ${
+                              config[field.key] ? 'translate-x-4' : 'translate-x-0'
+                            }`}
+                          />
+                        </button>
+                      ) : field.type === 'select' ? (
+                        <select
+                          value={config[field.key] as string}
+                          onChange={(e) => handleChange(field.key, e.target.value)}
+                          className="w-28 px-2 py-1 border border-gray-200 rounded text-sm"
+                        >
+                          {field.options?.map((opt) => (
+                            <option key={opt.value} value={opt.value}>
+                              {opt.label}
+                            </option>
+                          ))}
+                        </select>
                       ) : (
                         <input
                           type="text"

@@ -1,4 +1,5 @@
 import type { ParsedElement, Page, LayoutConfig } from '../types';
+import { transformText, getTransformContext, applySegmentsToDOM } from './textTransform';
 
 function measureElementHeight(
   el: ParsedElement,
@@ -72,23 +73,24 @@ export function measureWithDOM(
           font-size: ${config.h1FontSize}px;
           font-weight: ${config.h1FontWeight};
           line-height: ${config.h1LineHeight};
-          letter-spacing: ${config.h1LetterSpacing}px;
+          letter-spacing: 0px;
           margin-bottom: ${config.h1MarginBottom}px;
           word-wrap: break-word;
           overflow-wrap: break-word;
         `;
+        applySegmentsToDOM(node, transformText(el.content, getTransformContext(config, 'h1')));
       } else {
         node.style.cssText = `
           font-size: ${config.bodyFontSize}px;
           font-weight: ${config.bodyFontWeight};
           line-height: ${config.bodyLineHeight};
-          letter-spacing: ${config.bodyLetterSpacing}px;
+          letter-spacing: 0px;
           margin-bottom: ${config.bodyMarginBottom}px;
           word-wrap: break-word;
           overflow-wrap: break-word;
         `;
+        applySegmentsToDOM(node, transformText(el.content, getTransformContext(config, 'body')));
       }
-      node.textContent = el.content;
       container.appendChild(node);
 
       const rect = node.getBoundingClientRect();
