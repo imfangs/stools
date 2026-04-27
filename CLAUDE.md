@@ -6,7 +6,7 @@
 
 **线上地址：** https://st.fangs.cc
 **仓库：** https://github.com/imfangs/stools
-**当前版本：** v0.0.6（每次 build 自动 patch bump）
+**当前版本：** v0.0.7（每次 build 自动 patch bump）
 
 ## 技术栈
 
