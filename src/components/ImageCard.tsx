@@ -1,15 +1,33 @@
 import { useRef, useEffect, useState } from 'react';
 import type { Page, LayoutConfig, ParsedElement } from '../types';
+import { transformText, getTransformContext } from '../core/textTransform';
+import type { SpanSegment } from '../core/textTransform';
 
 interface ImageCardProps {
   page: Page;
   config: LayoutConfig;
 }
 
+function renderSegments(segments: SpanSegment[]) {
+  return segments.map((seg, i) => (
+    <span
+      key={i}
+      style={{
+        ...(seg.marginLeft !== 0 ? { marginLeft: seg.marginLeft } : {}),
+        ...(seg.marginRight !== 0 ? { marginRight: seg.marginRight } : {}),
+        ...seg.style,
+      }}
+    >
+      {seg.text}
+    </span>
+  ));
+}
+
 function renderElement(el: ParsedElement, index: number, config: LayoutConfig, nextType?: string) {
   const beforeDivider = nextType === 'divider';
   switch (el.type) {
-    case 'h1':
+    case 'h1': {
+      const segments = transformText(el.content, getTransformContext(config, 'h1'));
       return (
         <div
           key={index}
@@ -17,17 +35,19 @@ function renderElement(el: ParsedElement, index: number, config: LayoutConfig, n
             fontSize: config.h1FontSize,
             fontWeight: config.h1FontWeight,
             lineHeight: config.h1LineHeight,
-            letterSpacing: config.h1LetterSpacing,
+            letterSpacing: 0,
             marginBottom: beforeDivider ? 0 : config.h1MarginBottom,
             color: config.textColor,
             wordWrap: 'break-word',
             overflowWrap: 'break-word',
           }}
         >
-          {el.content}
+          {renderSegments(segments)}
         </div>
       );
-    case 'body':
+    }
+    case 'body': {
+      const segments = transformText(el.content, getTransformContext(config, 'body'));
       return (
         <div
           key={index}
@@ -35,16 +55,17 @@ function renderElement(el: ParsedElement, index: number, config: LayoutConfig, n
             fontSize: config.bodyFontSize,
             fontWeight: config.bodyFontWeight,
             lineHeight: config.bodyLineHeight,
-            letterSpacing: config.bodyLetterSpacing,
+            letterSpacing: 0,
             marginBottom: beforeDivider ? 0 : config.bodyMarginBottom,
             color: config.textColor,
             wordWrap: 'break-word',
             overflowWrap: 'break-word',
           }}
         >
-          {el.content}
+          {renderSegments(segments)}
         </div>
       );
+    }
     case 'divider':
       return (
         <div

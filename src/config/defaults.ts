@@ -32,4 +32,9 @@ export const defaultConfig: LayoutConfig = {
   fontFamily: '-apple-system, "PingFang SC", "Helvetica Neue", "Noto Sans SC", sans-serif',
 
   previewColumns: 3,
+
+  cjkNumberSpacing: true,
+  cjkQuoteSpacing: true,
+  arrowStyle: 'short-bold',
+  emDashSeamless: true,
 };
