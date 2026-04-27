@@ -33,8 +33,7 @@ export const defaultConfig: LayoutConfig = {
 
   previewColumns: 3,
 
-  cjkNumberSpacing: true,
-  cjkQuoteSpacing: true,
-  arrowStyle: 'short-bold',
-  emDashSeamless: true,
+  cjkNumberSpacing: 16,
+  cjkQuoteSpacing: 16,
+  emDashOverlap: 5,
 };

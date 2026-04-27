@@ -15,7 +15,6 @@ function renderSegments(segments: SpanSegment[]) {
       style={{
         ...(seg.marginLeft !== 0 ? { marginLeft: seg.marginLeft } : {}),
         ...(seg.marginRight !== 0 ? { marginRight: seg.marginRight } : {}),
-        ...seg.style,
       }}
     >
       {seg.text}

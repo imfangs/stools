@@ -35,8 +35,7 @@ export interface LayoutConfig {
   textColor: string;
   fontFamily: string;
   previewColumns: number;
-  cjkNumberSpacing: boolean;
-  cjkQuoteSpacing: boolean;
-  arrowStyle: 'original' | 'short-bold' | 'triangle' | 'long';
-  emDashSeamless: boolean;
+  cjkNumberSpacing: number;
+  cjkQuoteSpacing: number;
+  emDashOverlap: number;
 }
