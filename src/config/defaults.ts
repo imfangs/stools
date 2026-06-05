@@ -36,4 +36,6 @@ export const defaultConfig: LayoutConfig = {
   cjkNumberSpacing: 16,
   cjkQuoteSpacing: 16,
   emDashOverlap: 5,
+  h1CjkLatinSpacing: 40,
+  bodyCjkLatinSpacing: 24,
 };

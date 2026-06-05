@@ -11,6 +11,7 @@ export interface TransformContext {
   cjkNumberSpacing: number;
   cjkQuoteSpacing: number;
   emDashOverlap: number;
+  cjkLatinSpacing: number;
 }
 
 // Character classifiers
@@ -58,6 +59,12 @@ function isEmDash(ch: string): boolean {
   return ch === '\u2014';
 }
 
+function isLatinLetter(ch: string): boolean {
+  if (ch.length !== 1) return false;
+  const code = ch.charCodeAt(0);
+  return (code >= 0x41 && code <= 0x5a) || (code >= 0x61 && code <= 0x7a);
+}
+
 export function getTransformContext(
   config: LayoutConfig,
   elementType: 'h1' | 'body',
@@ -68,6 +75,7 @@ export function getTransformContext(
     cjkNumberSpacing: config.cjkNumberSpacing,
     cjkQuoteSpacing: config.cjkQuoteSpacing,
     emDashOverlap: config.emDashOverlap,
+    cjkLatinSpacing: isH1 ? config.h1CjkLatinSpacing : config.bodyCjkLatinSpacing,
   };
 }
 
@@ -108,6 +116,17 @@ export function transformText(text: string, ctx: TransformContext): SpanSegment[
       }
       if (isCloseQuote(prev) && isCJK(ch) && !isCJKPunctuation(ch)) {
         segments[segments.length - 1].marginRight += ctx.cjkQuoteSpacing;
+      }
+    }
+
+    // CJK ↔ Latin letter spacing
+    if (ctx.cjkLatinSpacing > 0 && i > 0) {
+      const prev = graphemes[i - 1];
+      if (
+        (isCJK(prev) && !isCJKPunctuation(prev) && isLatinLetter(ch)) ||
+        (isLatinLetter(prev) && isCJK(ch) && !isCJKPunctuation(ch))
+      ) {
+        segments[segments.length - 1].marginRight += ctx.cjkLatinSpacing;
       }
     }
 

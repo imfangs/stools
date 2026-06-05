@@ -38,4 +38,6 @@ export interface LayoutConfig {
   cjkNumberSpacing: number;
   cjkQuoteSpacing: number;
   emDashOverlap: number;
+  h1CjkLatinSpacing: number;
+  bodyCjkLatinSpacing: number;
 }

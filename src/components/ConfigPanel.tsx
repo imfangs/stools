@@ -46,6 +46,8 @@ const fields: FieldDef[] = [
   { key: 'cjkNumberSpacing', label: '中数间距', type: 'number', group: '排版增强' },
   { key: 'cjkQuoteSpacing', label: '中引间距', type: 'number', group: '排版增强' },
   { key: 'emDashOverlap', label: '破折号重叠', type: 'number', group: '排版增强' },
+  { key: 'h1CjkLatinSpacing', label: 'H1 中英间距', type: 'number', group: '排版增强' },
+  { key: 'bodyCjkLatinSpacing', label: '正文中英间距', type: 'number', group: '排版增强' },
 ];
 
 export default function ConfigPanel({ config, onChange, onReset, onClose }: ConfigPanelProps) {
