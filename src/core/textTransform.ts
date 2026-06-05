@@ -79,9 +79,32 @@ export function getTransformContext(
   };
 }
 
+function stripCjkLatinSpace(graphemes: string[]): string[] {
+  if (graphemes.length < 3) return graphemes;
+  const result: string[] = [];
+  for (let i = 0; i < graphemes.length; i++) {
+    const ch = graphemes[i];
+    if (ch === ' ' && i > 0 && i < graphemes.length - 1) {
+      const prev = graphemes[i - 1];
+      const next = graphemes[i + 1];
+      const isCjkSide = (g: string) => isCJK(g) && !isCJKPunctuation(g);
+      const isLatinSide = (g: string) => isLatinLetter(g) || isDigit(g);
+      if (
+        (isCjkSide(prev) && isLatinSide(next)) ||
+        (isLatinSide(prev) && isCjkSide(next))
+      ) {
+        continue;
+      }
+    }
+    result.push(ch);
+  }
+  return result;
+}
+
 export function transformText(text: string, ctx: TransformContext): SpanSegment[] {
   const segmenter = new Intl.Segmenter(undefined, { granularity: 'grapheme' });
-  const graphemes = Array.from(segmenter.segment(text), (s) => s.segment);
+  const rawGraphemes = Array.from(segmenter.segment(text), (s) => s.segment);
+  const graphemes = stripCjkLatinSpace(rawGraphemes);
 
   if (graphemes.length === 0) return [];
 
