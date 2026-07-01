@@ -3,6 +3,7 @@ import JSZip from 'jszip';
 import { saveAs } from 'file-saver';
 import type { Page, LayoutConfig, ParsedElement } from '../types';
 import { transformText, getTransformContext, applySegmentsToDOM } from './textTransform';
+import { track } from '../lib/analytics';
 
 function buildPageDOM(page: Page, config: LayoutConfig): HTMLElement {
   const container = document.createElement('div');
@@ -144,20 +145,34 @@ export async function renderAndExport(
 
   const baseName = text ? extractFilenameFromText(text) : 'stools';
   const timestamp = formatTimestamp();
+  const startedAt = performance.now();
+  const format = pages.length === 1 ? 'png' : 'zip';
 
-  if (pages.length === 1) {
-    const blob = await captureOffscreen(pages[0], config);
-    saveAs(blob, `${baseName}_${timestamp}.png`);
-    return;
+  try {
+    if (pages.length === 1) {
+      const blob = await captureOffscreen(pages[0], config);
+      saveAs(blob, `${baseName}_${timestamp}.png`);
+    } else {
+      const zip = new JSZip();
+      for (let i = 0; i < pages.length; i++) {
+        const blob = await captureOffscreen(pages[i], config);
+        zip.file(`${i + 1}.png`, blob);
+      }
+      const zipBlob = await zip.generateAsync({ type: 'blob' });
+      saveAs(zipBlob, `${baseName}_${timestamp}.zip`);
+    }
+    track('export_success', {
+      pages: pages.length,
+      format,
+      duration_ms: Math.round(performance.now() - startedAt),
+      text_length: text?.length ?? 0,
+    });
+  } catch (err) {
+    track('export_failed', {
+      pages: pages.length,
+      format,
+      reason: err instanceof Error ? err.message.slice(0, 100) : 'unknown',
+    });
+    throw err;
   }
-
-  const zip = new JSZip();
-
-  for (let i = 0; i < pages.length; i++) {
-    const blob = await captureOffscreen(pages[i], config);
-    zip.file(`${i + 1}.png`, blob);
-  }
-
-  const zipBlob = await zip.generateAsync({ type: 'blob' });
-  saveAs(zipBlob, `${baseName}_${timestamp}.zip`);
 }

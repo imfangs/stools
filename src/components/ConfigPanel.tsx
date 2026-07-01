@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import type { LayoutConfig } from '../types';
 import { exportConfigJSON, importConfigJSON } from '../config/store';
+import { track } from '../lib/analytics';
 
 interface ConfigPanelProps {
   config: LayoutConfig;
@@ -60,6 +61,7 @@ export default function ConfigPanel({ config, onChange, onReset, onClose }: Conf
   const handleExport = () => {
     const json = exportConfigJSON(config);
     navigator.clipboard.writeText(json);
+    track('config_exported');
     alert('配置已复制到剪贴板');
   };
 
@@ -68,8 +70,10 @@ export default function ConfigPanel({ config, onChange, onReset, onClose }: Conf
       const newConfig = importConfigJSON(importText);
       onChange(newConfig);
       setImportText('');
+      track('config_imported');
       alert('导入成功');
     } catch {
+      track('config_import_failed');
       alert('配置格式错误');
     }
   };

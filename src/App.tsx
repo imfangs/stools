@@ -8,6 +8,7 @@ import Editor from './components/Editor';
 import Preview from './components/Preview';
 import ActionBar from './components/ActionBar';
 import ConfigPanel from './components/ConfigPanel';
+import { track } from './lib/analytics';
 
 const SAMPLE_TEXT = `# 男人的三大需求
 
@@ -371,6 +372,7 @@ export default function App() {
 
   const handleDownload = useCallback(async () => {
     if (pages.length === 0) return;
+    track('download_clicked', { pages: pages.length });
     setIsExporting(true);
     try {
       await renderAndExport(pages, config, text);
@@ -387,6 +389,14 @@ export default function App() {
   const handleConfigReset = useCallback(() => {
     const c = resetConfig();
     setConfig(c);
+    track('config_reset');
+  }, []);
+
+  const handleToggleConfig = useCallback(() => {
+    setShowConfig((prev) => {
+      if (!prev) track('config_panel_opened');
+      return !prev;
+    });
   }, []);
 
   return (
@@ -402,7 +412,7 @@ export default function App() {
           <div className="flex items-center gap-2">
           <span className="text-[11px] text-gray-300 font-mono select-all" title="版本号">v{__APP_VERSION__}</span>
           <button
-            onClick={() => setShowConfig(!showConfig)}
+            onClick={handleToggleConfig}
             className="p-2 hover:bg-gray-100 rounded-lg transition-colors text-gray-400 hover:text-gray-600"
             title="配置"
           >
